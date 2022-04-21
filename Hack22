@@ -63,11 +63,6 @@ end
 --Rest of code
 Exploiter = game.Players.LocalPlayer
 ExploitersCharacter = Exploiter.Character
-ExploitersCharHandler = ExploitersCharacter.CharacterHandler
-ExploitersRemotes = ExploitersCharHandler.Remotes
-if ExploitersRemotes:FindFirstChild("ApplyFallDamage") then
-	ExploitersRemotes:FindFirstChild("ApplyFallDamage"):Destroy()
-end
 Games._CurrentGame = CheckWhatGame()
 ScreenGui  = Instance.new("ScreenGui")
 ScreenGui.Name = "GalaxyExploit2"
@@ -85,6 +80,7 @@ GalaxySploitLabel.TextColor = BrickColor.White()
 GalaxySploitLabel.Size = UDim2.new(0, 200,0, 32)
 GalaxySploitLabel.Font = Enum.Font.Highway
 task.wait(1)
+
 DownTween = TweenService:Create(Frame,TweenInfo.new(1),{
 	Position = UDim2.new(0.431, 0,0.445, 0)
 })
@@ -98,6 +94,28 @@ DownTween.Completed:Connect(function()
 	}):Play()
 	Debris:AddItem(ScreenGui,2)
 end)
+Actions = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
+GridLayout = Instance.new("UIGridLayout",Actions)
+FallDamageText = Instance.new("TextLabel",Actions)
+FallDamageText.BackgroundTransparency = 1
+FallDamageText.Text = "Fall Damage"
+FallDamageTriggerButton = Instance.new("TextButton",Actions)
+FallDamageTriggerButton.Text = "Off"
+FallDamageTriggerButton.BackgroundTransparency = 1
+FallDamageTriggerButton.MouseButton1Down:Connect(function()
+	if FallDamageTriggerButton.Text == "Off" then
+		FallDamageTriggerButton.Text = "On"
+		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler")
+	elseif FallDamageTriggerButton == "On" then
+		FallDamageTriggerButton.Text = "Off"
+		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("ApplyFallDamage").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes")
+	end
+end)
+Slider = Instance.new("Frame",Actions)
+Slider.Size = UDim2.new(0, 208,0, 716)
+Slider.Position = UDim2.new(0.07, 0,0.065, 0)
+UICorner = Instance.new("UICorner",Slider)
+UICorner.CornerRadius = UDim.new(0,8)
 Players.ChildAdded:Connect(function(AddedPlayer)
 	if CheckIfMod(AddedPlayer) == true then
 		ReportMod(AddedPlayer)

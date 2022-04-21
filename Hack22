@@ -66,18 +66,18 @@ end
 ScreenGui  = Instance.new("ScreenGui")
 ScreenGui.Name = "GalaxyExploit2"
 Frame = Instance.new("Frame",ScreenGui)
-ScreenGui.Parent = CoreGui
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 Frame.Position = UDim2.new(0.431, 0,0.029, 0)
-Frame.Size = UDim2.new(0, 265,0, 100)
+Frame.Size = UDim2.new(0, 300,0, 100)
 Frame.BackgroundColor = BrickColor.Black()
 GalaxySploitLabel = Instance.new("TextLabel",Frame)
 GalaxySploitLabel.TextWrapped = true
 GalaxySploitLabel.TextScaled = true
-GalaxySploitLabel.Text = "Galaxy Exploit Loaded For : "..CheckWhatGame()
+GalaxySploitLabel.BackgroundTransparency = 1
+GalaxySploitLabel.Text = "Galaxy Exploit Loaded For :"..CheckWhatGame()
 GalaxySploitLabel.TextColor = BrickColor.White()
-GalaxySploitLabel.TextSize = 14
+GalaxySploitLabel.Size = UDim2.new(0, 200,0, 32)
 GalaxySploitLabel.Font = Enum.Font.Highway
-GalaxySploitLabel.Position = UDim2.new(0, 200,0, 32)
 task.wait(1)
 DownTween = TweenService:Create(Frame,TweenInfo.new(1),{
 	Position = UDim2.new(0.431, 0,0.445, 0)

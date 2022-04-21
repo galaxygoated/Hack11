@@ -16,7 +16,7 @@ function Alert()
 function CheckForMods()
     for _,v in pairs(Players:GetChildren()) do
     if table.find(Moderators,v.UserId) then
-        Alert()
+       -- Alert()
         local NotificationInfo = {Title="Moderator : "..v.Name,Text="Mod In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
         end
     end
@@ -30,7 +30,7 @@ Frame.Position = UDim2.new(0.431, 0,0.029, 0)
 Frame.Size = UDim2.new(0, 265,0, 100)
 Frame.BackgroundColor = BrickColor.Black()
 GalaxySploitLabel = Instance.new("TextLabel",Frame)
-GalaxySploitLabel.Text = "Galaxy Exploit"
+GalaxySploitLabel.Text = "Galaxy Exploit Loaded !"
 GalaxySploitLabel.TextColor = BrickColor.White()
 GalaxySploitLabel.TextSize = 14
 GalaxySploitLabel.Font = Enum.Font.Highway

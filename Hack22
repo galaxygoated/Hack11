@@ -1,4 +1,4 @@
-print("Testing My Nigga")
+
 ----- services
 Debris = game:GetService("Debris")
 Players = game:GetService("Players")
@@ -6,6 +6,7 @@ CoreGui = game:GetService("CoreGui")
 TweenService = game:GetService("TweenService")
 ------ modules 
 local Moderators = {1935133078,466077984,668057530}
+local Games = {}
 ------ functions
 function Alert()
     local Sound = Instance.new("Sound",CoreGui.GalaxyExploit2)
@@ -16,7 +17,7 @@ function Alert()
 function CheckForMods()
     for _,v in pairs(Players:GetChildren()) do
     if table.find(Moderators,v.UserId) then
-       -- Alert()
+       --Alert()
         local NotificationInfo = {Title="Moderator : "..v.Name,Text="Mod In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
         end
     end

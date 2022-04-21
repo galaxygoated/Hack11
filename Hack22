@@ -8,11 +8,11 @@ TweenService = game:GetService("TweenService")
 
 
 ------ Modules 
-local Moderators = {1935133078,466077984,668057530}
 local Games = {
+	_CurrentGame = nil;
 	Sanctum = {
 		ID = 9212627552;
-		Moderators = {}
+		Moderators = {2817760,81919939}
 	};
 	NotRogueLineage = {
 		ID = 9149676498;
@@ -30,7 +30,7 @@ function Alert()
 	Debris:AddItem(Sound,2)
 end
 function CheckIfMod(PlayerToCheck)
-	if table.find(Moderators,PlayerToCheck.UserId) then
+	if table.find(Games[Games._CurrentGame].Moderators,PlayerToCheck.UserId) then
 		return true
 	else
 		return false
@@ -51,18 +51,24 @@ function CheckWhatGame()
 	local ID = game.PlaceId
 	if ID == Games.Sanctum.ID then
 		_game = "Sanctum"
-	elseif ID == Games.NotRogueLineage then
-		_game = "Not Rogue Lineage"
+	elseif ID == Games.NotRogueLineage.ID then
+		_game = "NotRogueLineage"
 	else
-		_game = "Unkown Game"
+		_game = "Non Supported Game"
 	end
 	return _game
 end
 
 
-
-
 --Rest of code
+Exploiter = game.Players.LocalPlayer
+ExploitersCharacter = Exploiter.Character
+ExploitersCharHandler = ExploitersCharacter.CharacterHandler
+ExploitersRemotes = ExploitersCharHandler.Remotes
+if ExploitersRemotes:FindFirstChild("ApplyFallDamage") then
+	ExploitersRemotes:FindFirstChild("ApplyFallDamage"):Destroy()
+end
+Games._CurrentGame = CheckWhatGame()
 ScreenGui  = Instance.new("ScreenGui")
 ScreenGui.Name = "GalaxyExploit2"
 Frame = Instance.new("Frame",ScreenGui)
@@ -74,7 +80,7 @@ GalaxySploitLabel = Instance.new("TextLabel",Frame)
 GalaxySploitLabel.TextWrapped = true
 GalaxySploitLabel.TextScaled = true
 GalaxySploitLabel.BackgroundTransparency = 1
-GalaxySploitLabel.Text = "Galaxy Exploit Loaded For :"..CheckWhatGame()
+GalaxySploitLabel.Text = "Galaxy Hub Loaded For :"..CheckWhatGame()
 GalaxySploitLabel.TextColor = BrickColor.White()
 GalaxySploitLabel.Size = UDim2.new(0, 200,0, 32)
 GalaxySploitLabel.Font = Enum.Font.Highway

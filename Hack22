@@ -55,6 +55,8 @@ function CheckWhatGame()
 		_game = "Sanctum"
 	elseif ID == Games.NotRogueLineage then
 		_game = "Not Rogue Lineage"
+	else
+		_game = "Non Supported Game"
 	end
 	return _game
 end

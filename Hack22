@@ -37,10 +37,10 @@ function CheckIfMod(PlayerToCheck)
 	end
 end
 function ImportantLeft(Type,Victim)
-	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.."Left the server",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.." Left the server",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 end
 function ImportantInServer(Type,Victim)
-	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.."In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.." In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 end
 
 function CheckForMods()

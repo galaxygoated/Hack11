@@ -71,15 +71,29 @@ ExploitersCharacter = Exploiter.Character
 ExploiterMouse = Exploiter:GetMouse()
 UserInputService.InputBegan:Connect(function(Input,IsTyping)
 	if IsTyping then
+		warn("Typing")
 		return 
 	end
-	if Input.KeyCode == Enum.Keycode.X then
-		TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
-			CFrame = ExploiterMouse.Hit
-		}):Play()
+	if Input.KeyCode == Enum.KeyCode.X then
+		local Part = Instance.new("Part",workspace)
+		Part.CFrame = ExploiterMouse.Hit
+		Part.Name = "数"
+		Part.Anchored = true
+		Part.Transparency = 1
+		Part.CanCollide = false
+		local Check = Part.Position - ExploitersCharacter.HumanoidRootPart.Position
+		if Check.Magnitude < 1000 then
+			local Telepoort = TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
+				CFrame = Part.CFrame
+			})
+			Telepoort:Play()
+			Telepoort.Completed:Connect(function()
+				Debris:AddItem(Part,0)
+			end)
+		end
 	end
 end)
-local NotificationInfo = {Title="Click Teleport Binded To KeyBind : X",Text="Click Teleport Activated",Duration=math.huge} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+local NotificationInfo = {Title="Click Teleport Activated",Text="Click Teleport Binded to Key : X",Duration=math.huge} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Games._CurrentGame = CheckWhatGame()
 ScreenGui  = Instance.new("ScreenGui")
 ScreenGui.Name = "GalaxyExploit2"
@@ -112,7 +126,7 @@ DownTween.Completed:Connect(function()
 	Debris:AddItem(ScreenGui,2)
 end)
 
-ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "数三三三三三数三三三数三三三数数三三三数三三三三三数数三三三数三三数三三三三数三数三三三三数三三三三数三数三三数数数数字三"
+--ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "数三三三三三数三三三数三三三数数三三三数三三三三三数数三三三数三三数三三三三数三数三三三三数三三三三数三数三三数数数数字三"
 local NotificationInfo = {Title="No Fall Damage Activated",Text="No Fall Activated",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Players.ChildAdded:Connect(function(AddedPlayer)
 	if CheckIfMod(AddedPlayer) == true then

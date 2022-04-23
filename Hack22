@@ -83,7 +83,7 @@ UserInputService.InputBegan:Connect(function(Input,IsTyping)
 		Part.CanCollide = false
 		local Check = Part.Position - ExploitersCharacter.HumanoidRootPart.Position
 		if Check.Magnitude < 1000 then
-			local Telepoort = TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
+			local Telepoort = TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(1.5),{
 				CFrame = Part.CFrame
 			})
 			Telepoort:Play()

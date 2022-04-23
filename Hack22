@@ -94,23 +94,8 @@ DownTween.Completed:Connect(function()
 	}):Play()
 	Debris:AddItem(ScreenGui,2)
 end)
-Actions = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
-GridLayout = Instance.new("UIGridLayout",Actions)
-FallDamageText = Instance.new("TextLabel",Actions)
-FallDamageText.BackgroundTransparency = 1
-FallDamageText.Text = "Fall Damage"
-FallDamageTriggerButton = Instance.new("TextButton",Actions)
-FallDamageTriggerButton.Text = "Off"
-FallDamageTriggerButton.BackgroundTransparency = 1
-FallDamageTriggerButton.MouseButton1Down:Connect(function()
-	if FallDamageTriggerButton.Text == "Off" then
-		FallDamageTriggerButton.Text = "On"
-		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler")
-	elseif FallDamageTriggerButton == "On" then
-		FallDamageTriggerButton.Text = "Off"
-		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("ApplyFallDamage").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes")
-	end
-end)
+ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler")
+	local NotificationInfo = {Title="No Fall Damage Activated",Text="No Fall Activated",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Slider = Instance.new("Frame",Actions)
 Slider.Size = UDim2.new(0, 208,0, 716)
 Slider.Position = UDim2.new(0.07, 0,0.065, 0)

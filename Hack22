@@ -3,6 +3,7 @@ Debris = game:GetService("Debris")
 Players = game:GetService("Players")
 CoreGui = game:GetService("CoreGui")
 TweenService = game:GetService("TweenService")
+UserInputService = game:GetService("UserInputService")
 
 
 
@@ -67,6 +68,18 @@ end
 --Rest of code
 Exploiter = game.Players.LocalPlayer
 ExploitersCharacter = Exploiter.Character
+ExploiterMouse = Exploiter:GetMouse()
+UserInputService.InputBegan:Connect(function(Input,IsTyping)
+	if IsTyping then
+		return 
+	end
+	if Input.KeyCode == Enum.Keycode.X then
+		TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
+			CFrame = ExploiterMouse.Hit
+		}):Play()
+	end
+end)
+local NotificationInfo = {Title="Click Teleport Binded To KeyBind : X",Text="Click Teleport Activated",Duration=math.huge} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Games._CurrentGame = CheckWhatGame()
 ScreenGui  = Instance.new("ScreenGui")
 ScreenGui.Name = "GalaxyExploit2"
@@ -98,6 +111,7 @@ DownTween.Completed:Connect(function()
 	}):Play()
 	Debris:AddItem(ScreenGui,2)
 end)
+
 ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "数三三三三三数三三三数三三三数数三三三数三三三三三数数三三三数三三数三三三三数三数三三三三数三三三三数三数三三数数数数字三"
 local NotificationInfo = {Title="No Fall Damage Activated",Text="No Fall Activated",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Players.ChildAdded:Connect(function(AddedPlayer)

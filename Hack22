@@ -36,13 +36,17 @@ function CheckIfMod(PlayerToCheck)
 		return false
 	end
 end
-function ReportMod(Mod)
-	local NotificationInfo = {Title="Moderator : "..Mod.Name,Text="Mod In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+function ImportantLeft(Type,Victim)
+	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.."Left the server",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 end
+function ImportantInServer(Type,Victim)
+	local NotificationInfo = {Title= Type..": "..Victim.Name,Text= Type.."In The Server be careful",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+end
+
 function CheckForMods()
 	for _,v in pairs(Players:GetChildren()) do
 		if CheckIfMod(v) == true then
-			ReportMod(v)
+			ImportantInServer("Moderator",v)
 		end
 	end
 end
@@ -94,16 +98,16 @@ DownTween.Completed:Connect(function()
 	}):Play()
 	Debris:AddItem(ScreenGui,2)
 end)
-ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Parent = ExploitersCharacter:FindFirstChild("CharacterHandler")
-	local NotificationInfo = {Title="No Fall Damage Activated",Text="No Fall Activated",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
-Slider = Instance.new("Frame",Actions)
-Slider.Size = UDim2.new(0, 208,0, 716)
-Slider.Position = UDim2.new(0.07, 0,0.065, 0)
-UICorner = Instance.new("UICorner",Slider)
-UICorner.CornerRadius = UDim.new(0,8)
+ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "数三三三三三数三三三数三三三数数三三三数三三三三三数数三三三数三三数三三三三数三数三三三三数三三三三数三数三三数数数数字三"
+local NotificationInfo = {Title="No Fall Damage Activated",Text="No Fall Activated",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
 Players.ChildAdded:Connect(function(AddedPlayer)
 	if CheckIfMod(AddedPlayer) == true then
-		ReportMod(AddedPlayer)
+		ImportantInServer("Moderator", AddedPlayer)
+	end
+end)
+Players.ChildRemoved:Connect(function(RemovedPlayer)
+	if CheckIfMod(RemovedPlayer) == true then
+		ImportantLeft("Moderator",RemovedPlayer)
 	end
 end)
 task.wait(1)

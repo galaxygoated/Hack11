@@ -23,8 +23,11 @@ local Games = {
 local Exploit = {
 	AttachingToBack = false;
 	Teleporting = false;
-	NoFallDamage = false
+	NoFallDamage = false;
+	AutoBagPickup = false;
+	_Font = "Kalam"
 }
+
 
 ------ Functions
 function Alert(ToAlert)
@@ -63,6 +66,13 @@ function CheckForMods()
 		end
 	end
 end
+function CheckForIllus()
+	for _,v in pairs(Players:GetChildren()) do
+		if CheckIfIllusionist(v) == true then
+			ImportantInServer("Illusionist",v)
+		end
+	end
+end
 function CheckWhatGame()
 	local _game = nil
 	local ID = game.PlaceId
@@ -74,6 +84,24 @@ function CheckWhatGame()
 		_game = "Non Supported Game"
 	end
 	return _game
+end
+function ItemDropped(ItemName,ToolBag)
+	local NotificationInfo = {Title= "Item Dropped",Text= "A "..ItemName.." Has been dropped.",Duration=5} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+	if Exploit.AutoBagPickup == true then
+		while ToolBag do
+			task.wait()
+			ToolBag.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		end
+	end
+end
+function PickUpBags()
+	if Exploit.AutoBagPickup == true then
+	for _,v in pairs(workspace:WaitForChild("Thrown"):GetChildren()) do
+		if v.Name == "ToolBag" then
+				ItemDropped(v:FindFirstChild("BillboardGui"):FindFirstChildWhichIsA("TextLabel").Text,v)
+		end
+		end
+		end
 end
 function SkycastleTP()
 	local Player = game:GetService("Players").LocalPlayer
@@ -92,149 +120,213 @@ function AttachToBack(Target,Exploiter)
 		Exploit.AttachingToBack = false
 	end
 end
---Rest of code
 Exploiter = game.Players.LocalPlayer
 ExploitersCharacter = Exploiter.Character
 ExploiterMouse = Exploiter:GetMouse()
-UserInputService.InputBegan:Connect(function(Input,IsTyping)
-	if IsTyping then
-		warn("Typing")
-		return 
+function StartExploit()
+	Games._CurrentGame = CheckWhatGame()
+	local ScreenGui  = Instance.new("ScreenGui")
+	ScreenGui.Name = "GalaxyExploit2"
+    local Frame = Instance.new("Frame",ScreenGui)
+	ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+	Frame.Position = UDim2.new(0.431, 0,0.029, 0)
+	Frame.Size = UDim2.new(0, 300,0, 100)
+	Frame.BackgroundColor = BrickColor.Black()
+	local GalaxySploitLabel = Instance.new("TextLabel",Frame)
+	GalaxySploitLabel.TextWrapped = true
+	GalaxySploitLabel.TextScaled = true
+	GalaxySploitLabel.BackgroundTransparency = 1
+	GalaxySploitLabel.Text = "Galaxy Hub Loaded For : "..CheckWhatGame()
+	GalaxySploitLabel.TextColor = BrickColor.White()
+	GalaxySploitLabel.Size = UDim2.new(0, 200,0, 32)
+	GalaxySploitLabel.Font = Enum.Font[Exploit._Font]
+	task.wait(1)
+    local HUB = Instance.new("ScreenGui",Exploiter.PlayerGui)
+	local HUBFrame = Instance.new("Frame",HUB)
+	local UICorner = Instance.new("UICorner",HUBFrame)
+	UICorner.CornerRadius = UDim.new(0, 8)
+	HUBFrame.Size = UDim2.new(0, 232,0, 643)
+	HUBFrame.BorderSizePixel = 0
+	HUBFrame.Position = UDim2.new(0.077, 0,0.104, 0)
+	local GalaxyHubText = Instance.new("TextLabel",HUBFrame)
+	GalaxyHubText.Position = UDim2.new(0.069, 0,-0.078, 0)
+	GalaxyHubText.Size = UDim2.new(0, 200,0, 50)
+	GalaxyHubText.TextWrapped = true
+	GalaxyHubText.Text = "Galaxy Hub | https://discord.gg/uwFPa8Gm"
+	GalaxyHubText.TextScaled = true
+	GalaxyHubText.Font = Enum.Font[Exploit._Font]
+	GalaxyHubText.TextColor = BrickColor.Black()
+	GalaxyHubText.BackgroundTransparency = 1
+	local HUBLabel = Instance.new("TextLabel",HUBFrame)
+	HUBLabel.BackgroundTransparency = 1
+	HUBLabel.TextColor = BrickColor.Black()
+	HUBLabel.Text = "Locals"
+	HUBLabel.Font = Enum.Font[Exploit._Font]
+	HUBLabel.Size = UDim2.new(0, 200,0, 50)
+	HUBLabel.TextWrapped = true
+	HUBLabel.TextScaled = true
+	HUBLabel.Position = UDim2.new({0.069, 0},{0, 0})
+	local Line = Instance.new("TextLabel",HUBFrame)
+	Line.Text = "__________________"
+	Line.TextWrapped = true
+	Line.TextScaled = true
+	Line.Font = Enum.Font[Exploit._Font]
+	Line.TextColor = BrickColor.Black()
+	Line.Size = UDim2.new(0, 232,0, 50)
+	Line.Position = UDim2.new(-0.004, 0,0.02, 0)
+	Line.BackgroundTransparency = 1
+	local Options = Instance.new("Frame",HUBFrame)
+	Options.BackgroundTransparency = 1
+	Options.Size = UDim2.new(0, 130,0, 591)
+	Options.Position = UDim2.new(0.004, 0,0.078, 0)
+	local UIGridLayout = Instance.new("UIGridLayout",Options)
+	UIGridLayout.CellSize = UDim2.new(0, 150,0, 50)
+	UIGridLayout.CellPadding = UDim2.new(0, 6,0, 5)
+	local NoFallToggle = Instance.new("TextButton",Options)
+	NoFallToggle.Name = "NoFall"
+	NoFallToggle.TextWrapped = true
+	NoFallToggle.TextScaled = true
+	NoFallToggle.Font = Enum.Font[Exploit._Font]
+	NoFallToggle.Size = UDim2.new(0, 131,0, 50)
+	NoFallToggle.Position = UDim2.new(-0.004, 0,0.112, 0)
+	if Exploit.NoFallDamage == false then
+		NoFallToggle.Text = "Toggle No Fall [Off]"
+		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "Ban"
+	elseif Exploit.NoFallDamage == true then
+		NoFallToggle.Text = "Toggle No Fall [On]"
+		ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Ban.Name = "ApplyFallDamage"
 	end
-	if Input.KeyCode == Enum.KeyCode.X then
-		if Exploit.AttachingToBack == true then
-			return
-		end
-		local Part = Instance.new("Part",workspace)
-		Part.CFrame = ExploiterMouse.Hit
-		Part.Name = "数"
-		Part.Anchored = true
-		Part.Transparency = 1
-		Part.CanCollide = false
-		local Check = Part.Position - ExploitersCharacter.HumanoidRootPart.Position
-		if Check.Magnitude < 1000 then
-			Exploit.Teleporting = true
-			local Telepoort = TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
-				CFrame = Part.CFrame
-			})
-			Telepoort:Play()
-			Telepoort.Completed:Connect(function()
-				Exploit.Teleporting = false			
-				Debris:AddItem(Part,1)
+	NoFallToggle.BackgroundTransparency = 1
+	NoFallToggle.BackgroundColor = BrickColor.Gray()
+	local AutoBagPickupToggle = Instance.new("TextButton",Options)
+	AutoBagPickupToggle.Name = "AutobagPickup"
+	AutoBagPickupToggle.Font = Enum.Font[Exploit._Font]
+	AutoBagPickupToggle.Size = UDim2.new(0, 131,0, 50)
+	AutoBagPickupToggle.TextScaled = true
+	AutoBagPickupToggle.TextWrapped = true
+	AutoBagPickupToggle.BackgroundTransparency = 1
+	local SkycastleTeleport = Instance.new("TextButton",Options)
+	SkycastleTeleport.Name = "SkyTP"
+	SkycastleTeleport.Font = Enum.Font[Exploit._Font]
+	SkycastleTeleport.Size = UDim2.new(0, 131,0, 50)
+	SkycastleTeleport.Text = "Teleport To Skycastle Throne"
+	SkycastleTeleport.TextScaled = true
+	SkycastleTeleport.TextWrapped = true
+	SkycastleTeleport.BackgroundTransparency = 1
+	if Exploit.AutoBagPickup == false then
+		AutoBagPickupToggle.Text = "Toggle AutoBagPickup [Off]"
+	elseif Exploit.AutoBagPickup == true then
+		AutoBagPickupToggle.Text = "Toggle AutoBagPickup [On]"
+		PickUpBags()
+	end
+	for _,v in pairs(Options:GetChildren()) do
+		if v:IsA("TextButton") then
+			v.MouseButton1Down:Connect(function()
+				if v.Name == "NoFall" then 
+					if Exploit.NoFallDamage == false then
+						Exploit.NoFallDamage = true
+						NoFallToggle.Text = "Toggle No Fall [ON]"
+						ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "Ban"
+					elseif Exploit.NoFallDamage == true then
+						Exploit.NoFallDamage = false
+						NoFallToggle.Text = "Toggle No Fall [Off]"
+						ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Ban.Name = "ApplyFallDamage"
+					end
+				elseif v.Name == "AutobagPickup"	then
+					if Exploit.AutoBagPickup == false then
+						AutoBagPickupToggle.Text = "Toggle AutoBagPickup [On]"
+						Exploit.AutoBagPickup = true
+						PickUpBags()
+					elseif Exploit.AutoBagPickup == true then
+						AutoBagPickupToggle.Text = "Toggle AutoBagPickup [Off]"
+						Exploit.AutoBagPickup = false
+					end					
+				elseif v.Name == "SkyTP" then
+					SkycastleTP()
+				end 
+			
 			end)
-		else
-			Part:Destroy()
+			v.MouseEnter:Connect(function()
+				TweenService:Create(v,TweenInfo.new(0.5),{
+					TextColor3 = Color3.new(0.666667, 0, 0)
+				}):Play()
+			end)
+			v.MouseLeave:Connect(function()
+				TweenService:Create(v,TweenInfo.new(0.5),{
+					TextColor3 = Color3.new(0, 0, 0)
+				}):Play()
+			end)
 		end
-	elseif Input.KeyCode == Enum.KeyCode.Z then
-		local Targets = workspace.Live
-		for _,v in pairs(Targets:GetChildren()) do
-			if v:FindFirstChild("Humanoid") then
-				local Distance = v.HumanoidRootPart.Position - Exploiter.Character.HumanoidRootPart.Position
-				if Distance.Magnitude < 150 then
-					warn("Found To Attach")
-					AttachToBack(v,Exploiter)
+	end
+	local DownTween = TweenService:Create(Frame,TweenInfo.new(1),{
+		Position = UDim2.new(0.431, 0,0.445, 0)
+	})
+	DownTween:Play()
+	DownTween.Completed:Connect(function()
+		TweenService:Create(GalaxySploitLabel,TweenInfo.new(1),{
+			TextTransparency = 1
+		}):Play()
+		TweenService:Create(Frame,TweenInfo.new(1),{
+			BackgroundTransparency = 1
+		}):Play()
+		Debris:AddItem(ScreenGui,2)
+	end)
+	UserInputService.InputBegan:Connect(function(Input,IsTyping)
+		if IsTyping then
+			warn("Typing")
+			return 
+		end
+		if Input.KeyCode == Enum.KeyCode.X then
+			if Exploit.AttachingToBack == true then
+				return
+			end
+			local Part = Instance.new("Part",workspace)
+			Part.CFrame = ExploiterMouse.Hit
+			Part.Name = "数"
+			Part.Anchored = true
+			Part.Transparency = 1
+			Part.CanCollide = false
+			local Check = Part.Position - ExploitersCharacter.HumanoidRootPart.Position
+			if Check.Magnitude < 1000 then
+				Exploit.Teleporting = true
+				local Telepoort = TweenService:Create(ExploitersCharacter.HumanoidRootPart,TweenInfo.new(3),{
+					CFrame = Part.CFrame
+				})
+				Telepoort:Play()
+				Telepoort.Completed:Connect(function()
+					Exploit.Teleporting = false			
+					Debris:AddItem(Part,1)
+				end)
+			else
+				Part:Destroy()
+			end
+		elseif Input.KeyCode == Enum.KeyCode.Z then
+			local Targets = workspace.Live
+			for _,v in pairs(Targets:GetChildren()) do
+				if v:FindFirstChild("Humanoid") then
+					local Distance = v.HumanoidRootPart.Position - Exploiter.Character.HumanoidRootPart.Position
+					if Distance.Magnitude < 150 and not v.Name == Exploiter.Name then
+						warn("Found To Attach")
+						AttachToBack(v,Exploiter)
+					end
 				end
 			end
 		end
-	end
-end)
-local NotificationInfo = {Title="Click Teleport Activated",Text="Click Teleport Binded to Key : X",Duration=math.huge} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
-Alert(Exploiter)
-Games._CurrentGame = CheckWhatGame()
-ScreenGui  = Instance.new("ScreenGui")
-ScreenGui.Name = "GalaxyExploit2"
-Frame = Instance.new("Frame",ScreenGui)
-ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
-Frame.Position = UDim2.new(0.431, 0,0.029, 0)
-Frame.Size = UDim2.new(0, 300,0, 100)
-Frame.BackgroundColor = BrickColor.Black()
-GalaxySploitLabel = Instance.new("TextLabel",Frame)
-GalaxySploitLabel.TextWrapped = true
-GalaxySploitLabel.TextScaled = true
-GalaxySploitLabel.BackgroundTransparency = 1
-GalaxySploitLabel.Text = "Galaxy Hub Loaded For : "..CheckWhatGame()
-GalaxySploitLabel.TextColor = BrickColor.White()
-GalaxySploitLabel.Size = UDim2.new(0, 200,0, 32)
-GalaxySploitLabel.Font = Enum.Font.Highway
-task.wait(1)
-HUB = Instance.new("ScreenGui",Exploiter.PlayerGui)
-HUBFrame = Instance.new("Frame",HUB)
-UICorner = Instance.new("UICorner",HUBFrame)
-UICorner.CornerRadius = UDim.new(0, 8)
-HUBFrame.Size = UDim2.new(0, 232,0, 643)
-HUBFrame.BorderSizePixel = 0
-HUBFrame.Position = UDim2.new(0.077, 0,0.104, 0)
-HUBLabel = Instance.new("TextLabel",HUBFrame)
-HUBLabel.BackgroundTransparency = 1
-HUBLabel.TextColor = BrickColor.Black()
-HUBLabel.Text = "Locals"
-HUBLabel.Font = Enum.Font.Highway
-HUBLabel.Size = UDim2.new(0, 200,0, 50)
-HUBLabel.TextWrapped = true
-HUBLabel.TextScaled = true
-HUBLabel.Position = UDim2.new({0.069, 0},{0, 0})
-Line = Instance.new("TextLabel",HUBFrame)
-Line.Text = "__________________"
-Line.TextWrapped = true
-Line.TextScaled = true
-Line.Font = Enum.Font.Highway
-Line.TextColor = BrickColor.Black()
-Line.Size = UDim2.new(0, 232,0, 50)
-Line.Position = UDim2.new(-0.004, 0,0.02, 0)
-Line.BackgroundTransparency = 1
-Options = Instance.new("Frame",HUBFrame)
-Options.BackgroundTransparency = 1
-Options.Size = UDim2.new(0, 130,0, 591)
-Options.Position = UDim2.new(0.004, 0,0.078, 0)
-UIGridLayout = Instance.new("UIGridLayout",Options)
-UIGridLayout.CellSize = UDim2.new(0, 150,0, 50)
-UIGridLayout.CellPadding = UDim2.new(0, 6,0, 5)
-NoFallToggle = Instance.new("TextButton",Options)
-NoFallToggle.Name = "NoFall"
-NoFallToggle.Size = UDim2.new(0, 131,0, 50)
-NoFallToggle.Position = UDim2.new(-0.004, 0,0.112, 0)
-NoFallToggle.Text = "Toggle No Fall [OFF]"
-NoFallToggle.BackgroundTransparency = 1
-NoFallToggle.BackgroundColor = BrickColor.Gray()
-for _,v in pairs(Options:GetChildren()) do
-	if v:IsA("TextButton") then
-		v.MouseButton1Down:Connect(function()
-			if v.Name == "NoFall" then
-				if Exploit.NoFallDamage == false then
-					Exploit.NoFallDamage = true
-					NoFallToggle.Text = "Toggle No Fall [ON]"
-					ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").ApplyFallDamage.Name = "Ban"
-				elseif Exploit.NoFallDamage == true then
-					Exploit.NoFallDamage = true
-					NoFallToggle.Text = "Toggle No Fall [Off]"
-					ExploitersCharacter:FindFirstChild("CharacterHandler"):FindFirstChild("Remotes").Ban.Name = "ApplyFallDamage"
-				end
-			end
-		end)
-		v.MouseEnter:Connect(function()
-			TweenService:Create(v,TweenInfo.new(0.5),{
-				TextColor3 = Color3.new(0.666667, 0, 0)
-			}):Play()
-		end)
-		v.MouseLeave:Connect(function()
-			TweenService:Create(v,TweenInfo.new(0.5),{
-				TextColor3 = Color3.new(0, 0, 0)
-			}):Play()
-		end)
-	end
+	end)
+	local NotificationInfo = {Title="Click Teleport Activated",Text="Click Teleport Binded to Key : X",Duration=math.huge} game.StarterGui:SetCore ("SendNotification", NotificationInfo)
+	workspace:WaitForChild("Thrown").ChildAdded:Connect(function(v)
+		if v.Name == "ToolBag" then
+			task.wait()
+			ItemDropped(v:FindFirstChild("BillboardGui"):FindFirstChildWhichIsA("TextLabel").Text,v)
+		end
+	end)
 end
-DownTween = TweenService:Create(Frame,TweenInfo.new(1),{
-	Position = UDim2.new(0.431, 0,0.445, 0)
-})
-DownTween:Play()
-DownTween.Completed:Connect(function()
-	TweenService:Create(GalaxySploitLabel,TweenInfo.new(1),{
-		TextTransparency = 1
-	}):Play()
-	TweenService:Create(Frame,TweenInfo.new(1),{
-		BackgroundTransparency = 1
-	}):Play()
-	Debris:AddItem(ScreenGui,2)
+--Rest of code
+StartExploit()
+workspace.Live.ChildAdded:Connect(function(v)
+	if v.Name == Exploiter.Name then
+		StartExploit()
+	end
 end)
 Players.ChildAdded:Connect(function(AddedPlayer)
 	if CheckIfMod(AddedPlayer) == true then
@@ -254,3 +346,4 @@ Players.ChildRemoved:Connect(function(RemovedPlayer)
 end)
 task.wait(1)
 CheckForMods()
+CheckForIllus()
